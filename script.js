@@ -100,6 +100,7 @@ function cart()
         // var qtyViewText = document.createTextNode(cartDetails[i].orderqty);
         qtyView.setAttribute("id","qty-view"+i)
         qtyView.setAttribute("type", "number");
+        qtyView.setAttribute("onchange","quantityChange("+i+",'changePrice')");
         qtyView.setAttribute("value",cartDetails[i].orderqty);
         qtyView.classList.add('modal-qty')
         // qtyView.appendChild(qtyViewText)
@@ -138,32 +139,42 @@ function cart()
 //function to change quantity in modal
 function quantityChange(index,op)
 {
+    // cart();
     if(cartDetails[index].orderqty>0)
     {
+        var val = parseInt(document.getElementById("qty-view"+index).value,10);
         if(op=='add')
         {
-            cartDetails[index].orderqty= cartDetails[index].orderqty+1;
+            
+            cartDetails[index].orderqty= val+1;
+            // console.log("value"+ val)
+            // console.log(cartDetails[index].orderqty)
+            // console.log("index  "+index)
+
+
             // cartDetails[check].orderqty = cartDetails[check].orderqty+1
         }
-        else
+        //if op is 'sub'
+        else if(op=='sub')
         {   
             if(cartDetails[index].orderqty==1) {                               
                 removeElement(index); 
                 return 0;               
             }
             else{                
-                cartDetails[index].orderqty= cartDetails[index].orderqty-1;
+                cartDetails[index].orderqty= val-1;
             }
         }
-        cart();
-        document.getElementById("qty-view"+index).value=cartDetails[index].orderqty;
-        document.getElementById("model-product-price"+index).innerText=cartDetails[index].orderqty*cartDetails[index].price
+        else{
+            cartDetails[index].orderqty= val;
+        }
+        // cart();
     }
-    else{
-        // document.getElementById('cart-counter').style.visibility="hidden";
-        cart()
-    }
+    document.getElementById("qty-view"+index).value=cartDetails[index].orderqty;
+    document.getElementById("model-product-price"+index).innerText=cartDetails[index].orderqty*cartDetails[index].price
     
+        // document.getElementById('cart-counter').style.visibility="hidden";
+        // cart()  
 }
 
 function removeElement(index)
@@ -197,6 +208,8 @@ function addToCart(index)
     if( check!=-1)
     {
         // cartDetails[check].orderqty = cartDetails[check].orderqty+1
+        var val = parseInt(document.getElementById("qty-view"+check).value,10);
+        console.log(val)
         quantityChange(check,'add')
         // console.log(cartDetails);//check to view cart
     }
@@ -208,7 +221,7 @@ function addToCart(index)
     }
     
     
-    
+    cart();
     
     
 }
