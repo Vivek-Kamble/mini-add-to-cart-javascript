@@ -53,7 +53,7 @@
               <div class="modal-content">
                 <div>
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Order Summary</h5>
+                    <h5 class="modal-title" id="order-id"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -68,14 +68,28 @@
                 <div id="modal-invoice" class="modal-invoice">
                   
                 </div>
-                  <button class="place-order btn btn-primary">Place Your order</button>
+                  <button class="place-order btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#order-confirm-modal">Place Your order</button>
               </div>
               </div>
             </div>
           </div>
 
           <!-- order successfully placed -->
+          <!-- icon color #1AE841 -->
+          <div class="modal fade bd-example-modal-lg" id="order-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="check-body">
+                  <img src="./icons/check.png" class="check-order">
+                  <h3>Thank You</h3>
+                  <h4>Order Successfully Placed</h4>
 
+                  <h6 style="margin-top: 20px;">Payment Method</h6>
+                  <h6>CASH ON DELIVERY</h6>
+              </div>
+              </div>
+            </div>
+          </div>
 
 </body>
 </html>

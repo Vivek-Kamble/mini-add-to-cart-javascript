@@ -321,9 +321,17 @@ function addElement () {
 function makeInvoice()
 {
    var invoiceid=document.getElementById('modal-invoice');
+
+    //    generate orderid
+    orderId = Math.floor(Math.random() * Math.pow(10, 8)) + 1;
+    
+    document.getElementById('order-id').innerText="Order Id : "+orderId;
+
+
+
    var totalPrice=0;
     invoiceid.innerHTML=""
-   console.log('check1');
+//    console.log('check1');
    
    for (i=0;i<cartDetails.length;i++)
    {        
