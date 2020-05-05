@@ -16,7 +16,7 @@
             <div class="logo" style="margin-left: 15%;">
                 <p style="font-size: 22px;line-height: 30px;">Ecommerce</p>
             </div>
-            <div class="cart" onclick="cart()" data-toggle="modal" data-target="#cartModal">
+            <div class="cart" onclick="cart()" data-toggle="modal" data-target=".bd-example-modal-lg">
                 <img id="cart-image" src="./icons/cart.png" height="40px">
                 <p style="width: 50px;display: inline-block;line-height: 44px;font-size: 20px; margin: 0;">CART
                 </p>
@@ -26,8 +26,8 @@
         <div id="items">
             
         </div>    
-        <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade bd-example-modal-lg" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">My Cart</h5>
@@ -40,10 +40,42 @@
                 </div>
                 <div class="modal-footer">            
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Back To Shopping</button>
-                  <button type="button" class="btn btn-primary" id="modal-payment">Make Payment</button>
+                  <button type="button" class="btn btn-primary" id="modal-payment" data-dismiss="modal" 
+                  onclick="makeInvoice()" data-toggle="modal" data-target="#invoice-modal">Make Payment</button>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- invoice -->
+          <div class="modal fade bd-example-modal-lg" id="invoice-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div>
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Order Summary</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <h1 style="text-align: center;font-size: 25px;" class="bg-primary text-white"><b>Invoice</b></h1>
+                  <ul>
+                      <li>Name : Vivek Kamble  </li>
+                      <li>Address :Kamothe, Navi Mumbai</li>
+                      <li>Total Amount : Rs <span id="final_invoice_price"></span></li>
+                  </ul>                                               
+                <h1 style="text-align: center;font-size: 25px;" class="bg-primary text-white"><b>Order Details</b></h1> 
+                <div id="modal-invoice" class="modal-invoice">
+                  
+                </div>
+                  <button class="place-order btn btn-primary">Place Your order</button>
+              </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- order successfully placed -->
+
+
 </body>
 </html>

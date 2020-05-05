@@ -129,6 +129,14 @@ function cart()
         itemprice.appendChild(itempriceText)
         modalCart.appendChild(itemprice)
 
+        //removing item from the list
+        var removeitem=document.createElement('button');
+        var removeitemText=document.createTextNode('Remove Item')
+        removeitem.appendChild(removeitemText);
+        removeitem.setAttribute("onclick",'removeElement('+i+')')
+        removeitem.classList.add('btn','btn-danger','modal-remove');
+        modalCart.appendChild(removeitem)
+
 
 
         modalId.appendChild(modalCart)
@@ -208,8 +216,8 @@ function addToCart(index)
     if( check!=-1)
     {
         // cartDetails[check].orderqty = cartDetails[check].orderqty+1
-        var val = parseInt(document.getElementById("qty-view"+check).value,10);
-        console.log(val)
+        // var val = parseInt(document.getElementById("qty-view"+check).value,10);
+        // console.log(val)
         quantityChange(check,'add')
         // console.log(cartDetails);//check to view cart
     }
@@ -239,6 +247,7 @@ function badgeUp(badgeFlag)
     }
     // console.log(cartDetails.length);    
 }
+
 function tilt()
 {
     var id=document.getElementById('cart-image');
@@ -307,3 +316,57 @@ function addElement () {
    
 }
 // addElement()
+
+/// invoice creation
+function makeInvoice()
+{
+   var invoiceid=document.getElementById('modal-invoice');
+   var totalPrice=0;
+    invoiceid.innerHTML=""
+   console.log('check1');
+   
+   for (i=0;i<cartDetails.length;i++)
+   {        
+   var orderlist = document.createElement("div");
+   orderlist.classList.add("order-item") 
+   orderlist.setAttribute("id","order-item-id"+i)
+
+   //item name
+   var itemName = document.createElement('p')
+   var itemNameText = document.createTextNode(cartDetails[i].name)
+   itemName.classList.add('order-product-name')
+   itemName.appendChild(itemNameText)
+   orderlist.appendChild(itemName)
+    
+   //rupee container
+   var orderpricecontainer=document.createElement('div')
+   orderpricecontainer.classList.add('orderpricecontainer')
+
+   //rupee
+   var rupee= document.createElement('p')
+   var rupeeText = document.createTextNode("₹​ ")
+   rupee.classList.add("order-product-rupee")
+   rupee.appendChild(rupeeText)
+   orderpricecontainer.appendChild(rupee)
+   
+   //item price
+   var itemprice = document.createElement('p')
+   var itempricevalue=cartDetails[i].orderqty*cartDetails[i].price
+   var itempriceText = document.createTextNode(cartDetails[i].price+" X "+cartDetails[i].orderqty+" = "+itempricevalue)
+   itemprice.setAttribute("id","order-product-price"+i)
+   itemprice.classList.add('order-product-price')
+   itemprice.appendChild(itempriceText)
+   orderpricecontainer.appendChild(itemprice)
+
+   orderlist.appendChild(orderpricecontainer)
+   
+//    calculating total price
+   totalPrice=totalPrice+itempricevalue;
+   
+   invoiceid.appendChild(orderlist)
+
+};
+document.getElementById('final_invoice_price').innerHTML=totalPrice
+// console.log(totalPrice);
+
+}

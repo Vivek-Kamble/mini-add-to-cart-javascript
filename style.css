@@ -113,7 +113,7 @@ body{
     vertical-align: top;
 }
 
-.modal-plus,.modal-qty,.modal-sub,.modal-product-price,.modal-product-rupee
+.modal-plus,.modal-qty,.modal-sub,.modal-product-price,.modal-product-rupee,.modal-remove
 {
     display: inline-block;
     padding: 2px;
@@ -126,7 +126,13 @@ body{
     line-height: 15px;
     font-weight: bolder;
 }
+.modal-sub{
+    margin-left: 100px;
+}
 
+.modal-remove{
+    float: right;
+}
 .modal-qty{
     height: 30px;
     width: 50px;
@@ -149,4 +155,37 @@ body{
 .alert-danger
 {
     text-align: center;
+}
+
+/* invoice css */
+.order-item
+{
+    width: 80%;
+    margin-left: 10%;
+}
+.order-product-name,.order-product-rupee,.order-product-price,.orderpricecontainer
+{
+    /* padding: 2px;s */
+    display: inline-block;
+    
+}
+.order-product-price
+{
+    /* float: right; */
+    /* text-align: center; */
+    
+    letter-spacing: 3px;
+}
+.orderpricecontainer
+{
+    /* float: right; */
+    position: absolute;
+    right: 100px;
+}
+.place-order
+{
+    width: 20%;
+    margin-left: 40%;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
 }
