@@ -47,6 +47,7 @@ function cart()
     // console.log("before removing"+modalCount);
     // console.log("cartdetails"+cartDetails.length)
 
+    
    
     if(modalCount>=0)
     {
@@ -54,6 +55,16 @@ function cart()
         // modId.remove();
         var modalId= document.getElementById('modal-body');
         modalId.innerHTML=""
+    }
+    if(cartDetails.length==0)
+    {
+        // console.log(modalId);
+        var cartEmpty = document.createElement('p');
+        var cartEmptyText = document.createTextNode('Your Cart is empty...');
+        cartEmpty.classList.add('alert-danger','alert')
+        cartEmpty.setAttribute("id","empty-id")
+        cartEmpty.appendChild(cartEmptyText);
+        modalId.appendChild(cartEmpty)      
     }
     // var id= document.getElementById('modal-body');
     // modalCount=id.childElementCount;
