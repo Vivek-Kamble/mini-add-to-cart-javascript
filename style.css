@@ -205,4 +205,5 @@ body{
     text-align: center;
     background-color:whitesmoke;
     font-family: roboto;
+    background-image: url('./icons/bg.jpg');
 }

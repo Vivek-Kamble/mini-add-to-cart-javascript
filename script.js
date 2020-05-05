@@ -290,7 +290,10 @@ function addElement () {
     var buyBtn = document.createElement("button");
     var buyBtnText = document.createTextNode("BUY");
     buyBtn.appendChild(buyBtnText);
-    buyBtn.setAttribute("id","buy")
+    buyBtn.setAttribute("onclick","buy("+i+")");
+    buyBtn.setAttribute("id","buy");
+    buyBtn.setAttribute("data-toggle","modal")
+    buyBtn.setAttribute("data-target","#invoice-modal")
     buyBtn.classList.add("btn","btn-primary");
     cart.appendChild(buyBtn);
 
@@ -317,6 +320,18 @@ function addElement () {
 }
 // addElement()
 
+//logic to buy button
+function buy(index)
+{
+    // console.log(index)
+    cartDetails = [];
+    cartDetails.push({name:productDetails[index].name,price:productDetails[index].price,orderqty:orderqty});
+    // console.log(cartDetails)
+    badgeUp(true);
+    makeInvoice();
+
+}
+
 /// invoice creation
 function makeInvoice()
 {
@@ -324,7 +339,7 @@ function makeInvoice()
 
     //    generate orderid
     orderId = Math.floor(Math.random() * Math.pow(10, 8)) + 1;
-    
+
     document.getElementById('order-id').innerText="Order Id : "+orderId;
 
 
@@ -377,4 +392,49 @@ function makeInvoice()
 document.getElementById('final_invoice_price').innerHTML=totalPrice
 // console.log(totalPrice);
 
+}
+
+//place your order
+function placedOrder(){
+    storageUpdate()
+    console.log(cartDetails);
+    
+    cartDetails = []
+    cart()
+}
+// localStorage.setItem('value', 1);
+function storageUpdate()
+{
+    
+    if(localStorage.getItem('stock'))
+    {
+        var stock = JSON.parse(localStorage.getItem('stock'));
+        for (i=0;i<cartDetails.length;i++)
+        {
+            check=stock.findIndex(x=>x.name==cartDetails[i].name)
+            if(check>=0)
+            {
+                //console.log(productDetails[check].qty-)
+                stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty
+                
+            }
+        }
+        localStorage.setItem('stock',JSON.stringify(stock));
+    }
+    else
+    {
+        let stockDetails = []
+        for(i=0;i<productDetails.length;i++)
+        {
+          stockDetails.push({name:productDetails[i].name,stockQty:productDetails[i].qty})
+        }
+        console.log(stockDetails)
+
+        localStorage.setItem('stock',JSON.stringify(stockDetails));
+        storageUpdate()
+        // console.log("else "+ localStorage.getItem('stock'));
+        
+    }
+    // localStorage.clear()
+      
 }
