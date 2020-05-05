@@ -57,7 +57,8 @@ function cart()
         modalId.innerHTML=""
     }
     if(cartDetails.length==0)
-    {
+    {   
+        document.getElementById('cart-counter').style.visibility="hidden";
         // console.log(modalId);
         var cartEmpty = document.createElement('p');
         var cartEmptyText = document.createTextNode('Your Cart is empty...');
@@ -65,6 +66,8 @@ function cart()
         cartEmpty.setAttribute("id","empty-id")
         cartEmpty.appendChild(cartEmptyText);
         modalId.appendChild(cartEmpty)      
+
+        
     }
     // var id= document.getElementById('modal-body');
     // modalCount=id.childElementCount;
@@ -144,11 +147,11 @@ function quantityChange(index,op)
         }
         else
         {   
-            if(cartDetails[index].orderqty==1) {
-                removeElement(index) 
+            if(cartDetails[index].orderqty==1) {                               
+                removeElement(index); 
                 return 0;               
             }
-            else{
+            else{                
                 cartDetails[index].orderqty= cartDetails[index].orderqty-1;
             }
         }
@@ -156,25 +159,34 @@ function quantityChange(index,op)
         document.getElementById("qty-view"+index).value=cartDetails[index].orderqty;
         document.getElementById("model-product-price"+index).innerText=cartDetails[index].orderqty*cartDetails[index].price
     }
+    else{
+        // document.getElementById('cart-counter').style.visibility="hidden";
+        cart()
+    }
     
 }
 
 function removeElement(index)
 {   
     cartDetails.splice(index,1)
-    cart();
-    badgeUp();
-    // document.getElementById("modal-item-id"+index).remove();
+    cart();//refresh cart
+    if(cartDetails.length==0)
+    {
+        badgeUp(false)
+    }
+    else{
+        badgeUp(true);
+    }
+        // document.getElementById("modal-item-id"+index).remove();
 }
 
 
 
 function addToCart(index)
 {
-    tilt()
-    // orderqty= ;
-
-
+    
+    tilt();//for tilting cart icon
+   
     //if productDetails[index].name find in cartdetails.name
     //then only quantity increment
     // oterwise add product in cart
@@ -192,7 +204,7 @@ function addToCart(index)
     else{
         cartDetails.push({name:productDetails[index].name,price:productDetails[index].price,orderqty:orderqty})
         // console.log(cartDetails);//check to view cart
-        badgeUp();
+        badgeUp(true);
     }
     
     
@@ -200,11 +212,19 @@ function addToCart(index)
     
     
 }
-function badgeUp()
-{
+function badgeUp(badgeFlag)
+{   
+
+    // if true then ++ up
+    if(badgeFlag==true)
+    {
     document.getElementById('cart-counter').innerText=cartDetails.length; 
-    // console.log(cartDetails.length);
-    
+    document.getElementById('cart-counter').style.visibility="visible"
+    }
+    else{
+        document.getElementById('cart-counter').style.visibility="hidden";
+    }
+    // console.log(cartDetails.length);    
 }
 function tilt()
 {
