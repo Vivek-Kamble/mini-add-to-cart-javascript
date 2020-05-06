@@ -409,9 +409,9 @@ document.getElementById('final_invoice_price').innerHTML=totalPrice
 
 //place your order
 function placedOrder(){
-    storageUpdate()
-    // console.log(cartDetails);
-    
+    // storageUpdate()
+    multipleItemsCheck()
+    // console.log(cartDetails);    
     cartDetails = []
     cart()
 }
@@ -447,6 +447,36 @@ function outOfStockDisplayChange(check)
     document.getElementById("add"+check).style.display="none"
     document.getElementById('out-of-stock'+check).style.visibility="visible"
 }
+
+function multipleItemsCheck()
+{   
+    var multipleItemsFlag=0;
+    for(i=0;i<cartDetails.length;i++)
+    {
+        check=stock.findIndex(x=>x.name==cartDetails[i].name)
+        if(stock[check].stockQty-cartDetails[i].orderqty>=0)
+        {
+            multipleItemsFlag=multipleItemsFlag+1
+            console.log(cartDetails[i].name + multipleItemsFlag);            
+        }
+        else{
+            multipleItemsFlag=multipleItemsFlag - 1
+            console.log(cartDetails[i].name + multipleItemsFlag);
+        }
+    }
+    console.log(multipleItemsFlag);
+    
+    if(multipleItemsFlag==cartDetails.length)
+    {
+        storageUpdate()
+    }
+    else
+    {
+        document.getElementById('check-body').style.display="none";
+        document.getElementById('exceed').style.display="block"
+    }
+}
+
 function storageUpdate()
 {
     for (i=0;i<cartDetails.length;i++)
