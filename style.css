@@ -215,3 +215,6 @@ body{
     font-family: roboto;
     background-image: url('./icons/bg.jpg');
 }
+#exceed{
+    margin-bottom: 0em;
+}

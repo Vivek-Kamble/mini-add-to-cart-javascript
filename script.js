@@ -34,7 +34,8 @@ const productDetails = [
 var cartDetails = [];
 var orderqty=1;
 
-
+//getting stock value
+var stock = []
 
 function cart()
 {
@@ -202,8 +203,6 @@ function removeElement(index)
         // document.getElementById("modal-item-id"+index).remove();
 }
 
-
-
 function addToCart(index)
 {
     
@@ -264,6 +263,7 @@ function tilt()
 window.onload=addElement;
 // document.body.onload=addElement;
 function addElement () { 
+    storageCreate()
     var eles = document.getElementById("items");
     for(i=0;i<productDetails.length;i++)
   { 
@@ -318,6 +318,12 @@ function addElement () {
     cart.appendChild(outOfStock);
 
     eles.appendChild(cart)
+
+    if(stock[i].stockQty==0)
+    {
+        outOfStockDisplayChange(i)
+    }
+
     // var currentDiv = document.getElementById("div1"); 
     // eles.insertBefore(cart, currentDiv);
       //console.log(productDetails[i].name)
@@ -410,32 +416,52 @@ function placedOrder(){
     cart()
 }
 // localStorage.setItem('value', 1);
-function storageUpdate()
+
+function storageCreate()
 {
-    
     if(localStorage.getItem('stock'))
     {
-        var stock = JSON.parse(localStorage.getItem('stock'));
-        for (i=0;i<cartDetails.length;i++)
+        stock = JSON.parse(localStorage.getItem('stock'));
+        }
+    else
+    {
+        let stockDetails = []
+        for(i=0;i<productDetails.length;i++)
+        {
+          stockDetails.push({name:productDetails[i].name,stockQty:productDetails[i].qty})          
+        }
+        // console.log(stockDetails)
+
+        localStorage.setItem('stock',JSON.stringify(stockDetails));
+        stock = JSON.parse(localStorage.getItem('stock'));
+        // console.log("else "+ localStorage.getItem('stock'));
+        
+    }
+    // localStorage.clear()
+      
+}
+
+function outOfStockDisplayChange(check)
+{
+    document.getElementById("buy"+check).style.display="none"
+    document.getElementById("add"+check).style.display="none"
+    document.getElementById('out-of-stock'+check).style.visibility="visible"
+}
+function storageUpdate()
+{
+    for (i=0;i<cartDetails.length;i++)
         {
             check=stock.findIndex(x=>x.name==cartDetails[i].name)
             if(check>=0)
-            {
-                //console.log(productDetails[check].qty-)
-                console.log(stock[check].stockQty-cartDetails[i].orderqty);
-                
+            {                
                 if(stock[check].stockQty-cartDetails[i].orderqty<=0)
-                {
-                    console.log('less');
+                {                    
                     if(stock[check].stockQty-cartDetails[i].orderqty==0)
-                    {
-                        console.log('equal');
-                        
-                        // document.getElementById('exceed').style.visibility="none"
+                    {                        
+                        document.getElementById('check-body').style.display="block";
+                        document.getElementById('exceed').style.display="none"
                         //buy button remove
-                        document.getElementById("buy"+check).style.display="none"
-                        document.getElementById("add"+check).style.display="none"
-                        document.getElementById('out-of-stock'+check).style.visibility="visible"
+                        outOfStockDisplayChange(check)
                         //product cannot be added it exceeds the stock value
                         //the stock gooes in -ve                    
                     
@@ -456,11 +482,11 @@ function storageUpdate()
                 }
                 
                 else{
-                    console.log('else');
+                    // console.log('else');
                     
                     stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty;
                     document.getElementById('exceed').style.display="none";
-                    console.log('after');
+                    // console.log('after');
                     
                 }
                 
@@ -470,21 +496,5 @@ function storageUpdate()
             }
         }
         localStorage.setItem('stock',JSON.stringify(stock));
-    }
-    else
-    {
-        let stockDetails = []
-        for(i=0;i<productDetails.length;i++)
-        {
-          stockDetails.push({name:productDetails[i].name,stockQty:productDetails[i].qty})          
-        }
-        // console.log(stockDetails)
-
-        localStorage.setItem('stock',JSON.stringify(stockDetails));
-        storageUpdate()
-        // console.log("else "+ localStorage.getItem('stock'));
-        
-    }
-    // localStorage.clear()
-      
+    
 }
