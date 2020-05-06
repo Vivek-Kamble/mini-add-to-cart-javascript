@@ -422,29 +422,48 @@ function storageUpdate()
             if(check>=0)
             {
                 //console.log(productDetails[check].qty-)
+                console.log(stock[check].stockQty-cartDetails[i].orderqty);
+                
                 if(stock[check].stockQty-cartDetails[i].orderqty<=0)
                 {
+                    console.log('less');
+                    if(stock[check].stockQty-cartDetails[i].orderqty==0)
+                    {
+                        console.log('equal');
+                        
+                        // document.getElementById('exceed').style.visibility="none"
+                        //buy button remove
+                        document.getElementById("buy"+check).style.display="none"
+                        document.getElementById("add"+check).style.display="none"
+                        document.getElementById('out-of-stock'+check).style.visibility="visible"
+                        //product cannot be added it exceeds the stock value
+                        //the stock gooes in -ve                    
                     
-                    //buy button remove
-                    document.getElementById("buy"+check).style.display="none"
-                    document.getElementById("add"+check).style.display="none"
-                    document.getElementById('out-of-stock'+check).style.visibility="visible"
-                    //product cannot be added it exceeds the stock value
-                    //the stock gooes in -ve                    
-                   
-                    // document.getElementById('order-confirm-modal').removeAttribute('id');                   
-                    document.getElementById('order-confirm-modal').setAttribute('data-dismiss','modal')
+                        // document.getElementById('order-confirm-modal').removeAttribute('id');                   
+                        // document.getElementById('order-confirm-modal').setAttribute('data-dismiss','modal')
+                        
+                        stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty
+                    }
+                        
+                    else{
+                        document.getElementById('check-body').style.display="none";
+                        // document.getElementById("buy"+check).style.display="none";
+                        // document.getElementById("add"+check).style.display="none";
+                        document.getElementById('exceed').style.display="block";
+                        // document.getElementById('out-of-stock'+check).style.visibility="visible";
+                    }
+
+                }
+                
+                else{
+                    console.log('else');
+                    
+                    stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty;
+                    document.getElementById('exceed').style.display="none";
+                    console.log('after');
                     
                 }
                 
-                    stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty
-                    // if(stock[check].stockQty==0)
-                    // {
-                        
-                    // }
-                
-                
-                    
                     // console.log('in stock'+stock[check].name +"  "+stock[check].stockQty)
                    
                    
