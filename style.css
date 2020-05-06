@@ -90,6 +90,14 @@ body{
 
 }
 
+.out-of-stock
+{
+    text-align: center;
+    width: 80%;
+    margin-left: 10%;
+    border: 2px solid orange;
+}
+
 /* image tilt */
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }

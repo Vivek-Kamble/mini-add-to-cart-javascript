@@ -151,6 +151,8 @@ function quantityChange(index,op)
     if(cartDetails[index].orderqty>0)
     {
         var val = parseInt(document.getElementById("qty-view"+index).value,10);
+       if(val>0)
+       {
         if(op=='add')
         {
             
@@ -176,6 +178,7 @@ function quantityChange(index,op)
         else{
             cartDetails[index].orderqty= val;
         }
+       }
         // cart();
     }
     document.getElementById("qty-view"+index).value=cartDetails[index].orderqty;
@@ -291,7 +294,7 @@ function addElement () {
     var buyBtnText = document.createTextNode("BUY");
     buyBtn.appendChild(buyBtnText);
     buyBtn.setAttribute("onclick","buy("+i+")");
-    buyBtn.setAttribute("id","buy");
+    buyBtn.setAttribute("id","buy"+i);
     buyBtn.setAttribute("data-toggle","modal")
     buyBtn.setAttribute("data-target","#invoice-modal")
     buyBtn.classList.add("btn","btn-primary");
@@ -301,14 +304,18 @@ function addElement () {
     var cartBtn = document.createElement("button");
     var cartBtnText = document.createTextNode("Add to Cart");
     cartBtn.appendChild(cartBtnText);
-    cartBtn.setAttribute("id","add")
-    // cartBtn.addEventListener('click',()=>{
-    //     addToCart(i)           
-    // },false);
-    // cartBtn.myp
+    cartBtn.setAttribute("id","add"+i);
     cartBtn.setAttribute("onclick","addToCart("+i+")");
     cartBtn.classList.add("btn","btn-primary");
     cart.appendChild(cartBtn);
+
+    var outOfStock=document.createElement('div');
+    var outOfStockText=document.createTextNode('Out of Stock');
+    outOfStock.classList.add('alert','alert-warning','out-of-stock');
+    outOfStock.style.visibility="hidden";
+    outOfStock.setAttribute('id','out-of-stock'+i)
+    outOfStock.appendChild(outOfStockText);
+    cart.appendChild(outOfStock);
 
     eles.appendChild(cart)
     // var currentDiv = document.getElementById("div1"); 
@@ -397,7 +404,7 @@ document.getElementById('final_invoice_price').innerHTML=totalPrice
 //place your order
 function placedOrder(){
     storageUpdate()
-    console.log(cartDetails);
+    // console.log(cartDetails);
     
     cartDetails = []
     cart()
@@ -415,8 +422,32 @@ function storageUpdate()
             if(check>=0)
             {
                 //console.log(productDetails[check].qty-)
-                stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty
+                if(stock[check].stockQty-cartDetails[i].orderqty<=0)
+                {
+                    
+                    //buy button remove
+                    document.getElementById("buy"+check).style.display="none"
+                    document.getElementById("add"+check).style.display="none"
+                    document.getElementById('out-of-stock'+check).style.visibility="visible"
+                    //product cannot be added it exceeds the stock value
+                    //the stock gooes in -ve                    
+                   
+                    // document.getElementById('order-confirm-modal').removeAttribute('id');                   
+                    document.getElementById('order-confirm-modal').setAttribute('data-dismiss','modal')
+                    
+                }
                 
+                    stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty
+                    // if(stock[check].stockQty==0)
+                    // {
+                        
+                    // }
+                
+                
+                    
+                    // console.log('in stock'+stock[check].name +"  "+stock[check].stockQty)
+                   
+                   
             }
         }
         localStorage.setItem('stock',JSON.stringify(stock));
@@ -426,9 +457,9 @@ function storageUpdate()
         let stockDetails = []
         for(i=0;i<productDetails.length;i++)
         {
-          stockDetails.push({name:productDetails[i].name,stockQty:productDetails[i].qty})
+          stockDetails.push({name:productDetails[i].name,stockQty:productDetails[i].qty})          
         }
-        console.log(stockDetails)
+        // console.log(stockDetails)
 
         localStorage.setItem('stock',JSON.stringify(stockDetails));
         storageUpdate()
