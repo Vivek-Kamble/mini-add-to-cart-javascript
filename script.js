@@ -516,6 +516,7 @@ function storageUpdate()
                     
                     stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty;
                     document.getElementById('exceed').style.display="none";
+                    document.getElementById('check-body').style.display="block";
                     // console.log('after');
                     
                 }
