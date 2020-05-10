@@ -2,4 +2,10 @@ mini-add-to-cart project
 
 using advance JavaScript
 
-![project preview](../master/preview/cart-image.png)
+# some images of the project
+![project preview](../master/preview/mini-cart1.png)
+![project preview](../master/preview/mini-cart2.png)
+![project preview](../master/preview/mini-cart3.png)
+![project preview](../master/preview/mini-cart4.png)
+![project preview](../master/preview/mini-cart5.png)
+![project preview](../master/preview/mini-cart6.png)
