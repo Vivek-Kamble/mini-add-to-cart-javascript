@@ -27,6 +27,9 @@ body{
     
     overflow: hidden;
 }
+.cart{
+    position: relative;
+}
 .cart:hover{
     /* filter: invert(100%); */
     cursor: pointer;
@@ -35,20 +38,26 @@ body{
     display: inline-block;
     margin-top:1px;
     vertical-align: top;
+    
 }
 .badge
 {
-    position: absolute;
-    margin-top: -17px;
-    margin-left: 1038px;
+    position:absolute; 
+    left:30px; 
+    top:0px; 
+    z-index: 100;
 }
 .items
 {
-    width: 90%;
-    margin-left: 5%;
+    width: 100%;
+    /* margin-left: 5%; */
     margin-top: 200px;
     vertical-align: top;
     
+}
+.item:nth-child(1)
+{
+    margin-left: 0;
 }
 .item{
     height: 400px;
@@ -56,6 +65,7 @@ body{
     width: 20%;
     display: inline-block;
     border: 2px solid black;
+    margin-left: -0.3%;
     
 }
 .item img{

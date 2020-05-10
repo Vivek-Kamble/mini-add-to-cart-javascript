@@ -39,109 +39,39 @@ var stock = []
 
 function cart()
 {
-    
-    // console.log("cart clicked");
-    var modalId= document.getElementById('modal-body');
-    
-    
+    var modalId= document.getElementById('modal-body');    
     modalCount=modalId.childElementCount;
-    // console.log("before removing"+modalCount);
-    // console.log("cartdetails"+cartDetails.length)
-
-    
    
     if(modalCount>=0)
     {
-        // let modId=document.getElementById('modal-item-id');
-        // modId.remove();
         var modalId= document.getElementById('modal-body');
-        modalId.innerHTML=""
+        modalId.innerHTML="";       
     }
     if(cartDetails.length==0)
     {   
         document.getElementById('cart-counter').style.visibility="hidden";
-        // console.log(modalId);
-        var cartEmpty = document.createElement('p');
-        var cartEmptyText = document.createTextNode('Your Cart is empty...');
-        cartEmpty.classList.add('alert-danger','alert')
-        cartEmpty.setAttribute("id","empty-id")
-        cartEmpty.appendChild(cartEmptyText);
-        modalId.appendChild(cartEmpty)      
-
-        
+        emptyCartAlert()
     }
-    // var id= document.getElementById('modal-body');
-    // modalCount=id.childElementCount;
-    // console.log("after removing"+modalCount);    
-    
-    // cartDetails.forEach(element => 
+    var modalCartString = "";
+       if(cartDetails.length>0)
+       {
         for (i=0;i<cartDetails.length;i++)
-        {        
-        var modalCart = document.createElement("div");
-        modalCart.classList.add("modal-item") 
-        modalCart.setAttribute("id","modal-item-id"+i)
+        {       
+            
+            modalCartString=modalCartString.concat(` 
+            <div class="modal-item" id="modal-item-id${i}">
+                <p class="modal-product-name">${cartDetails[i].name}</p>
+                <button class="modal-sub" onclick="quantityChange(${i},'sub')">-</button>
+                <input id="qty-view${i}" type="number" onchange="quantityChange(${i},'changePrice')" value="${cartDetails[i].orderqty}" class="modal-qty">
+                <button onclick="quantityChange(${i},'add')" class="modal-plus">+</button>
+                <p class="modal-product-rupee">₹​ </p>
+                <p id="model-product-price${i}" class="modal-product-price">${cartDetails[i].orderqty*cartDetails[i].price}</p>
+                <button onclick="removeElement(${i})" class="btn btn-danger modal-remove">Remove Item</button>
+            </div>`)
 
-        //item name
-        var itemName = document.createElement('p')
-        var itemNameText = document.createTextNode(cartDetails[i].name)
-        itemName.classList.add('modal-product-name')
-        itemName.appendChild(itemNameText)
-        modalCart.appendChild(itemName)
-
-        //qty decrement button
-        var sub = document.createElement('button');
-        var subText = document.createTextNode('-');
-        sub.classList.add('modal-sub');
-        sub.setAttribute("onclick","quantityChange("+i+",'sub')");
-        sub.appendChild(subText);
-        modalCart.appendChild(sub);
-        
-        //qty display
-        var qtyView= document.createElement('input');
-        // var qtyViewText = document.createTextNode(cartDetails[i].orderqty);
-        qtyView.setAttribute("id","qty-view"+i)
-        qtyView.setAttribute("type", "number");
-        qtyView.setAttribute("onchange","quantityChange("+i+",'changePrice')");
-        qtyView.setAttribute("value",cartDetails[i].orderqty);
-        qtyView.classList.add('modal-qty')
-        // qtyView.appendChild(qtyViewText)
-        modalCart.appendChild(qtyView)
-        
-        //plus button qty increment
-        var plus = document.createElement('button');
-        var plusText = document.createTextNode('+');
-        plus.appendChild(plusText);
-        plus.setAttribute("onclick","quantityChange("+i+",'add')");
-        plus.classList.add('modal-plus');
-        modalCart.appendChild(plus);
-
-        //rupee
-        var rupee= document.createElement('p')
-        var rupeeText = document.createTextNode("₹​ ")
-        rupee.classList.add("modal-product-rupee")
-        rupee.appendChild(rupeeText)
-        modalCart.appendChild(rupee)
-
-        //item price
-        var itemprice = document.createElement('p')
-        var itempriceText = document.createTextNode(cartDetails[i].orderqty*cartDetails[i].price)
-        itemprice.setAttribute("id","model-product-price"+i)
-        itemprice.classList.add('modal-product-price')
-        itemprice.appendChild(itempriceText)
-        modalCart.appendChild(itemprice)
-
-        //removing item from the list
-        var removeitem=document.createElement('button');
-        var removeitemText=document.createTextNode('Remove Item')
-        removeitem.appendChild(removeitemText);
-        removeitem.setAttribute("onclick",'removeElement('+i+')')
-        removeitem.classList.add('btn','btn-danger','modal-remove');
-        modalCart.appendChild(removeitem)
-
-
-
-        modalId.appendChild(modalCart)
-    };
+        };
+        modalId.innerHTML = modalCartString;
+       }
     
 }
 
@@ -188,14 +118,25 @@ function quantityChange(index,op)
         // document.getElementById('cart-counter').style.visibility="hidden";
         // cart()  
 }
-
+function emptyCartAlert()
+{
+    var modalId= document.getElementById('modal-body');
+        var cartEmpty = document.createElement('p');
+        var cartEmptyText = document.createTextNode('Your Cart is empty...');
+        cartEmpty.classList.add('alert-danger','alert')
+        cartEmpty.setAttribute("id","empty-id")
+        cartEmpty.appendChild(cartEmptyText);
+        modalId.appendChild(cartEmpty)
+}
 function removeElement(index)
 {   
     cartDetails.splice(index,1)
     cart();//refresh cart
     if(cartDetails.length==0)
     {
-        badgeUp(false)
+        badgeUp(false)    
+        // emptyCartAlert()    
+
     }
     else{
         badgeUp(true);
@@ -265,71 +206,28 @@ window.onload=addElement;
 function addElement () { 
     storageCreate()
     var eles = document.getElementById("items");
+
+    var itemString = "";
     for(i=0;i<productDetails.length;i++)
   { 
-    var cart = document.createElement("div");
-    cart.classList.add("item") 
-    
-    //image tag
-    var newImg=document.createElement("IMG");
-    newImg.setAttribute("src",productDetails[i].imageUrl)
-    cart.appendChild(newImg)
-    
-    //p tag
-    var newP = document.createElement("p")
-    var newPText =document.createTextNode(productDetails[i].name); 
-    newP.appendChild(newPText)
-    newP.classList.add("product-name")
-    cart.appendChild(newP);
 
-    //price tag
-    var price=document.createElement("p");
-    var priceText = document.createTextNode("Rs. "+productDetails[i].price);
-    price.appendChild(priceText);
-    price.classList.add("product-price");
-    cart.appendChild(price);
-
-    //buy button
-    var buyBtn = document.createElement("button");
-    var buyBtnText = document.createTextNode("BUY");
-    buyBtn.appendChild(buyBtnText);
-    buyBtn.setAttribute("onclick","buy("+i+")");
-    buyBtn.setAttribute("id","buy"+i);
-    buyBtn.setAttribute("data-toggle","modal")
-    buyBtn.setAttribute("data-target","#invoice-modal")
-    buyBtn.classList.add("btn","btn-primary");
-    cart.appendChild(buyBtn);
-
-    //add to cart button 
-    var cartBtn = document.createElement("button");
-    var cartBtnText = document.createTextNode("Add to Cart");
-    cartBtn.appendChild(cartBtnText);
-    cartBtn.setAttribute("id","add"+i);
-    cartBtn.setAttribute("onclick","addToCart("+i+")");
-    cartBtn.classList.add("btn","btn-primary");
-    cart.appendChild(cartBtn);
-
-    var outOfStock=document.createElement('div');
-    var outOfStockText=document.createTextNode('Out of Stock');
-    outOfStock.classList.add('alert','alert-warning','out-of-stock');
-    outOfStock.style.visibility="hidden";
-    outOfStock.setAttribute('id','out-of-stock'+i)
-    outOfStock.appendChild(outOfStockText);
-    cart.appendChild(outOfStock);
-
-    eles.appendChild(cart)
-
-    if(stock[i].stockQty==0)
-    {
-        outOfStockDisplayChange(i)
-    }
-
+    itemString= itemString.concat(`
+    <div class="item">
+        <img src="${productDetails[i].imageUrl}">
+            <p class="product-name">${productDetails[i].name}</p>
+            <p class="product-price">Rs. ${productDetails[i].price}</p>
+            <button onclick="buy(${i})" id="buy${i}" data-toggle="modal" data-target="#invoice-modal" class="btn btn-primary">BUY</button>
+            <button id="add${i}" onclick="addToCart(${i})" class="btn btn-primary">Add to Cart</button>
+            <div class="alert alert-warning out-of-stock" id="out-of-stock${i}" style="visibility: hidden;">Out of Stock</div>
+    </div>`)
     // var currentDiv = document.getElementById("div1"); 
     // eles.insertBefore(cart, currentDiv);
       //console.log(productDetails[i].name)
   }
-
-   
+  //inserting html elements   
+  eles.innerHTML=itemString;
+  outOfStockDisplayChange()
+  
 }
 // addElement()
 
@@ -360,48 +258,27 @@ function makeInvoice()
    var totalPrice=0;
     invoiceid.innerHTML=""
 //    console.log('check1');
-   
+   var orderItemString = ""
    for (i=0;i<cartDetails.length;i++)
-   {        
-   var orderlist = document.createElement("div");
-   orderlist.classList.add("order-item") 
-   orderlist.setAttribute("id","order-item-id"+i)
+   {     
+    var itempricevalue=cartDetails[i].orderqty*cartDetails[i].price     
+       orderItemString = orderItemString.concat(`
+    <div class="order-item" id="order-item-id${i}">
+        <p class="order-product-name">${cartDetails[i].name}</p>
+        <div class="orderpricecontainer">
+            <p class="order-product-rupee">₹​ </p>
+            <p id="order-product-price${i}" class="order-product-price">${cartDetails[i].price} X ${cartDetails[i].orderqty} = ${itempricevalue}</p>
+        </div>
+    </div>`)
 
-   //item name
-   var itemName = document.createElement('p')
-   var itemNameText = document.createTextNode(cartDetails[i].name)
-   itemName.classList.add('order-product-name')
-   itemName.appendChild(itemNameText)
-   orderlist.appendChild(itemName)
-    
-   //rupee container
-   var orderpricecontainer=document.createElement('div')
-   orderpricecontainer.classList.add('orderpricecontainer')
-
-   //rupee
-   var rupee= document.createElement('p')
-   var rupeeText = document.createTextNode("₹​ ")
-   rupee.classList.add("order-product-rupee")
-   rupee.appendChild(rupeeText)
-   orderpricecontainer.appendChild(rupee)
-   
-   //item price
-   var itemprice = document.createElement('p')
-   var itempricevalue=cartDetails[i].orderqty*cartDetails[i].price
-   var itempriceText = document.createTextNode(cartDetails[i].price+" X "+cartDetails[i].orderqty+" = "+itempricevalue)
-   itemprice.setAttribute("id","order-product-price"+i)
-   itemprice.classList.add('order-product-price')
-   itemprice.appendChild(itempriceText)
-   orderpricecontainer.appendChild(itemprice)
-
-   orderlist.appendChild(orderpricecontainer)
-   
+       
 //    calculating total price
    totalPrice=totalPrice+itempricevalue;
    
-   invoiceid.appendChild(orderlist)
+   
 
 };
+invoiceid.innerHTML = orderItemString;
 document.getElementById('final_invoice_price').innerHTML=totalPrice
 // console.log(totalPrice);
 
@@ -441,11 +318,21 @@ function storageCreate()
       
 }
 
-function outOfStockDisplayChange(check)
+function outOfStockDisplayChange()
 {
-    document.getElementById("buy"+check).style.display="none"
-    document.getElementById("add"+check).style.display="none"
-    document.getElementById('out-of-stock'+check).style.visibility="visible"
+    for(i=0;i<productDetails.length;i++)
+    {
+      if(stock[i].stockQty==0)
+      {    
+        document.getElementById("buy"+i).style.display="none"
+        document.getElementById("add"+i).style.display="none"
+        document.getElementById('out-of-stock'+i).style.visibility="visible"
+      }
+    }
+
+
+
+
 }
 
 function multipleItemsCheck()
@@ -491,22 +378,19 @@ function storageUpdate()
                         document.getElementById('check-body').style.display="block";
                         document.getElementById('exceed').style.display="none"
                         //buy button remove
-                        outOfStockDisplayChange(check)
+                        
                         //product cannot be added it exceeds the stock value
                         //the stock gooes in -ve                    
-                    
-                        // document.getElementById('order-confirm-modal').removeAttribute('id');                   
-                        // document.getElementById('order-confirm-modal').setAttribute('data-dismiss','modal')
-                        
-                        stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty
+
+                        stock[check].stockQty=stock[check].stockQty-cartDetails[i].orderqty;
+                        outOfStockDisplayChange()
                     }
                         
                     else{
                         document.getElementById('check-body').style.display="none";
-                        // document.getElementById("buy"+check).style.display="none";
-                        // document.getElementById("add"+check).style.display="none";
+                       
                         document.getElementById('exceed').style.display="block";
-                        // document.getElementById('out-of-stock'+check).style.visibility="visible";
+                       
                     }
 
                 }
@@ -521,11 +405,8 @@ function storageUpdate()
                     
                 }
                 
-                    // console.log('in stock'+stock[check].name +"  "+stock[check].stockQty)
-                   
                    
             }
         }
         localStorage.setItem('stock',JSON.stringify(stock));
-    
 }
