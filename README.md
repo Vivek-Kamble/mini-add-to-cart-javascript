@@ -1,6 +1,7 @@
-mini-add-to-cart project
+## mini-add-to-cart project
+## using advance JavaScript
+## *made by Vivek *
 
-using advance JavaScript
 
 # some images of the project
 ![project preview](../master/preview/mini-cart1.png)
