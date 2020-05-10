@@ -1,6 +1,6 @@
 ## mini-add-to-cart project
 ## using advance JavaScript
-## *made by Vivek *
+## _made by Vivek_
 
 
 # some images of the project
